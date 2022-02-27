@@ -4,9 +4,9 @@
 - reactquery
 
 
-# Router
-/ -> All coins
-/:id -> ex) /btc -> Coin Detail
+# Routing
+- / -> All coins
+- /:id -> ex) /btc -> Coin Detail
 
-/btc/information
-/btc/chart
+- /btc/information
+- /btc/chart
