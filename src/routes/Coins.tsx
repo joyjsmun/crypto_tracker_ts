@@ -1,4 +1,3 @@
-import { useIsomorphicLayoutEffect } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { StringDecoder } from "string_decoder";
