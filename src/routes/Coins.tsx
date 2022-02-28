@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useIsomorphicLayoutEffect } from "framer-motion";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { StringDecoder } from "string_decoder";
 import styled from "styled-components";
@@ -14,10 +15,10 @@ padding:0px 20px;
 `;
 
 const Header = styled.header`
-height:10vh;
-display: flex;
-justify-content: center;
-align-items: center;
+  height: 15vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
 `;
 
@@ -41,7 +42,11 @@ a {
 
 `;
 
+const Loader = styled.span`
+    text-align: center;
+    display: block;
 
+`
 
 
 
@@ -59,18 +64,30 @@ interface CoinInterface{
 
 
 function Coins(){
+    //array of coin => <CoinInterface[]> 
     const [coins,setCoins] = useState<CoinInterface[]>([]);
+    const [loading,setLoading] = useState(true);
+    useEffect(() => {
+        // this func will excute immediately
+       (async() => {
+          const response = await fetch("https://api.coinpaprika.com/v1/coins");
+          const json = await response.json();
+          setCoins(json.slice(0,100));
+          setLoading(false);
+       })();
+    },[])
 
     return<Container>
         <Header>
             <Title>Coin</Title>
         </Header>
         {/* Link will not refresh the page */}
-        <CoinList>
+       {loading? <Loader>Loading...</Loader>
+       : (<CoinList>
           {coins.map((coin) => (<Coin key={coin.id}>
             <Link to={`/${coin.id}`}>{coin.name} &rarr;</Link>
           </Coin>))}
-        </CoinList>
+        </CoinList>)}
     </Container>
 }
 
