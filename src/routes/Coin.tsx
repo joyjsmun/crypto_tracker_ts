@@ -170,8 +170,10 @@ function Coin(){
 
     return<Container>
     <Header>
-        <Title>{state?.name || "Loading..."}</Title>
-    </Header>
+        <Title>
+          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+        </Title>
+      </Header>
     {/* Link will not refresh the page */}
    {loading? <Loader>Loading...</Loader> : (
        <>

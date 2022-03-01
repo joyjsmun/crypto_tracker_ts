@@ -58,8 +58,18 @@ function Chart({coinId}:ChartProps){
                 xaxis:{
                     axisBorder:{show:false},
                     labels:{show:false},
+                    type:"datetime",
                 axisTicks:{show:false},
-            },
+                categories: data?.map(price => price.time_close)
+                 },
+                 fill: {type:"gradient",gradient:{gradientToColors:["blue"], stops:[0,100]},
+                },
+                colors:["red"],
+                tooltip:{
+                    y:{
+                        formatter:(value) => `$ ${value.toFixed(3)}`
+                    }
+                }
             }} 
         />
     )}
