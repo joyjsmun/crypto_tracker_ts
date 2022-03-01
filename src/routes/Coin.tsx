@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { Link, Route, Switch, useLocation, useParams, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
+import { fetchCoinInfo, fetchCoinTickers } from "./api";
 import Chart from "./Chart";
 import Price from "./Price";
 
@@ -140,23 +142,31 @@ const Tab = styled.div<{isActive:boolean}>`
 
 
 function Coin(){
-    const [loading,setLoading] = useState(true);
     const {coinId} = useParams<RouteParams>();
     const {state} = useLocation<RouteState>();
-    const [info,setInfo] = useState<InfoData>();
-    const [priceInfo,setPriceInfo] = useState<PriceData>();
     const priceMatch = useRouteMatch("/:coinId/price");
     const chartMatch = useRouteMatch("/:coinId/chart");
-    console.log(priceMatch)
-    useEffect(() => {
-        (async () => {
-            const infoData = await (await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)).json()
-            const priceData = await(await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)).json();
-            setInfo(infoData);
-            setPriceInfo(priceData);
-            setLoading(false);
-        })();
-    },[coinId]);
+
+    // query need the unique key and loading as well
+    const {isLoading:infoLoading,data:infoData} = useQuery<InfoData>(["info", coinId],() => fetchCoinInfo(coinId));
+    const {isLoading:tickerLoading,data:tickersData} = useQuery<PriceData>(["tickers", coinId],() => fetchCoinTickers(coinId));
+
+   
+    // const [loading,setLoading] = useState(true);
+    // const [info,setInfo] = useState<InfoData>();
+    // const [priceInfo,setPriceInfo] = useState<PriceData>();
+    // useEffect(() => {
+    //     (async () => {
+    //         const infoData = await (await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)).json()
+    //         const priceData = await(await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)).json();
+    //         setInfo(infoData);
+    //         setPriceInfo(priceData);
+    //         setLoading(false);
+    //     })();
+    // },[coinId]);
+
+    // loading can be either one 
+   const loading = infoLoading || tickerLoading;
 
     return<Container>
     <Header>
@@ -168,26 +178,26 @@ function Coin(){
        <OverView>
            <OverViewItem>
                <span>Rank:</span>
-               <span>{info?.rank}</span>
+               <span>{infoData?.rank}</span>
            </OverViewItem>
            <OverViewItem>
                <span>Symbol:</span>
-               <span>{info?.symbol}</span>
+               <span>{infoData?.symbol}</span>
            </OverViewItem>
            <OverViewItem>
                <span>OpenSource:</span>
-               <span>{info?.open_source}</span>
+               <span>{infoData?.open_source}</span>
            </OverViewItem>
        </OverView>
-       <Description>{info?.description}</Description>
+       <Description>{infoData?.description}</Description>
            <OverView>
             <OverViewItem>
               <span>Total Suply:</span>
-              <span>{priceInfo?.total_supply}</span>
+              <span>{tickersData?.total_supply}</span>
             </OverViewItem>
             <OverViewItem>
               <span>Max Supply:</span>
-              <span>{priceInfo?.max_supply}</span>
+              <span>{tickersData?.max_supply}</span>
             </OverViewItem>
           </OverView>
           <Tabs>
@@ -203,7 +213,7 @@ function Coin(){
                   <Price />
               </Route>
               <Route path={`/:coinId/chart`}>
-                  <Chart />
+                  <Chart coinId={coinId}/>
               </Route>
           </Switch>
        </>
