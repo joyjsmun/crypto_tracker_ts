@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { Route, Switch, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
+import Chart from "./Chart";
+import Price from "./Price";
 
 
 const Title = styled.h1`
@@ -91,6 +93,30 @@ interface PriceData{
     };
 }
 
+const OverView = styled.div`
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(0,0,0,0.5);
+    padding: 10px 20px;
+    border-radius:10px;
+`
+
+const OverViewItem = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    span:first-child {
+    font-size: 10px;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+`
+const Description = styled.p`
+margin: 20px 0px;
+`
+
 
 function Coin(){
     const [loading,setLoading] = useState(true);
@@ -102,18 +128,54 @@ function Coin(){
         (async () => {
             const infoData = await (await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)).json()
             const priceData = await(await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)).json();
-            setInfo(info);
+            setInfo(infoData);
             setPriceInfo(priceData);
             setLoading(false);
         })();
-    },[])
- 
+    },[coinId]);
+
     return<Container>
     <Header>
         <Title>{state?.name || "Loading..."}</Title>
     </Header>
     {/* Link will not refresh the page */}
-   {loading? <Loader>Loading...</Loader> : `$ ${priceInfo?.quotes.USD.price}`}
+   {loading? <Loader>Loading...</Loader> : (
+       <>
+       <OverView>
+           <OverViewItem>
+               <span>Rank:</span>
+               <span>{info?.rank}</span>
+           </OverViewItem>
+           <OverViewItem>
+               <span>Symbol:</span>
+               <span>{info?.symbol}</span>
+           </OverViewItem>
+           <OverViewItem>
+               <span>OpenSource:</span>
+               <span>{info?.open_source}</span>
+           </OverViewItem>
+       </OverView>
+       <Description>{info?.description}</Description>
+           <OverView>
+            <OverViewItem>
+              <span>Total Suply:</span>
+              <span>{priceInfo?.total_supply}</span>
+            </OverViewItem>
+            <OverViewItem>
+              <span>Max Supply:</span>
+              <span>{priceInfo?.max_supply}</span>
+            </OverViewItem>
+          </OverView>
+          <Switch>
+              <Route path={`/${coinId}/price`}>
+                  <Price />
+              </Route>
+              <Route path={`/${coinId}/chart`}>
+                  <Chart />
+              </Route>
+          </Switch>
+       </>
+   )}
    </Container>
    
 }
