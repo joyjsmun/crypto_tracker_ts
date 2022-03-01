@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import {Helmet} from "react-helmet";
 import { useQuery } from "react-query";
 import { Link, Route, Switch, useLocation, useParams, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
@@ -149,7 +150,10 @@ function Coin(){
 
     // query need the unique key and loading as well
     const {isLoading:infoLoading,data:infoData} = useQuery<InfoData>(["info", coinId],() => fetchCoinInfo(coinId));
-    const {isLoading:tickerLoading,data:tickersData} = useQuery<PriceData>(["tickers", coinId],() => fetchCoinTickers(coinId));
+    const {isLoading:tickerLoading,data:tickersData} = 
+        useQuery<PriceData>(["tickers", coinId],() => fetchCoinTickers(coinId),{
+            refetchInterval:5000,
+        });
 
    
     // const [loading,setLoading] = useState(true);
@@ -169,6 +173,9 @@ function Coin(){
    const loading = infoLoading || tickerLoading;
 
     return<Container>
+        <Helmet>
+            <title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</title>
+        </Helmet>
     <Header>
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
@@ -187,8 +194,8 @@ function Coin(){
                <span>{infoData?.symbol}</span>
            </OverViewItem>
            <OverViewItem>
-               <span>OpenSource:</span>
-               <span>{infoData?.open_source}</span>
+               <span>Price:</span>
+               <span>${tickersData?.quotes.USD.price}</span>
            </OverViewItem>
        </OverView>
        <Description>{infoData?.description}</Description>
