@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
-import { StringDecoder } from "string_decoder";
 import styled from "styled-components";
 import { fetchCoins } from "./api";
 
@@ -60,6 +59,17 @@ const CoinWrapper = styled.div`
     align-items: center;
     margin-left:20px;
 `
+const Button = styled.button`
+  background-color: ${(props) => props.theme.accentColor}; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 12px;
+  border-radius: 20px;
+  text-align: center;
+  text-decoration: none;
+  margin-right: 20px ;
+`
+
 
 interface ICoin{
     id: string,
@@ -83,6 +93,7 @@ function Coins(){
         <Helmet>
             <title>Coins</title>
         </Helmet>
+        <Button><Link to="/">mode change &#8617;</Link></Button>
         <Header>
             <Title>Coins</Title>
         </Header>

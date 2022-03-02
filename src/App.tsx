@@ -67,7 +67,7 @@ body{
 
 a{
   text-decoration: none;
-  color:inherit;
+  color:black;
 }
 `
 
