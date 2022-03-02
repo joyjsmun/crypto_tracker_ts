@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Router from './routes/Router';
-import {createGlobalStyle} from "styled-components";
+import styled, {createGlobalStyle} from "styled-components";
 import { ReactQueryDevtools } from "react-query/devtools";
 
 
-const GlobalStyle = createGlobalStyle`
+const GlobalStyle = createGlobalStyle<{darkMode:boolean}>`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
 
 */
@@ -61,8 +61,8 @@ table {
 
 body{
   font-family: 'Source Sans Pro', sans-serif;
-  /* background-color: ${(props) => props.theme.bgColor};
-  color:${(props) => props.theme.textColor}; */
+  background-color: ${(props) => props.darkMode ? props.theme.bgColor: props.theme.lightBgColor};
+  color:${(props) => props.darkMode ? props.theme.textColor: props.theme.lightTextColor};
 }
 
 a{
@@ -71,11 +71,36 @@ a{
 }
 `
 
+const ModeButton= styled.button<{darkMode:boolean}>`
+  background-color: ${(props) => props.darkMode ? props.theme.accentColor: props.theme.lightAccentColor};
+  border: none;
+  color: white;
+  padding: 10px 12px;
+  border-radius: 20px;
+  text-align: center;
+  text-decoration: none;
+  margin-right: 20px ;
+`
+
+interface IMode{
+    darkMode:boolean;
+}
+
+
 function App() {
+  const [darkMode,setDark] = useState(true);
+  const onClick = () => {
+      if(darkMode === true){
+          setDark(false);
+      }else{
+          setDark(true);   
+      }
+  }
   return (
     //ghost componet could make not to use parent component
     <>
-    <GlobalStyle/>
+    <GlobalStyle darkMode={darkMode}/>
+    <ModeButton onClick={onClick} darkMode={darkMode}>{darkMode? `Light` : `Dark`} Mode &#8617;</ModeButton>
     <Router />
     <ReactQueryDevtools initialIsOpen={true}/>
     </>
