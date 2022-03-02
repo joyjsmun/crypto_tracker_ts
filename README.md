@@ -15,6 +15,6 @@
 
 # Todo
 - [] Implement a beautiful dark mode toggle button.
-- [] Implement a back button from the /:coinId route.
-- [] Implement the /:coinId/price tab
+- [x] Implement a back button from the /:coinId route.
+- [x] Implement the /:coinId/price tab.
 - [] Implement a CandleStick chart on the /:coinId/chart tab.

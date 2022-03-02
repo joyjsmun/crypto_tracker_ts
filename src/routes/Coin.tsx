@@ -140,7 +140,16 @@ const Tab = styled.div<{isActive:boolean}>`
         display: block;
     }
 `
-
+const Button = styled.button`
+  background-color: ${(props) => props.theme.accentColor}; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 12px;
+  border-radius: 20px;
+  text-align: center;
+  text-decoration: none;
+  margin-right: 20px ;
+`
 
 function Coin(){
     const {coinId} = useParams<RouteParams>();
@@ -177,10 +186,12 @@ function Coin(){
             <title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</title>
         </Helmet>
     <Header>
+        <Button><Link to="/">Back to Coin List &rarr;</Link></Button>
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </Title>
       </Header>
+     
     {/* Link will not refresh the page */}
    {loading? <Loader>Loading...</Loader> : (
        <>
