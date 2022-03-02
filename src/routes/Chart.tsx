@@ -17,7 +17,7 @@ volume: number;
 market_cap: number;
 }
 
-function Chart({coinId}:ChartProps){
+function LineChart({coinId}:ChartProps){
     // 14 of them => array[]
     const {isLoading,data} = 
         useQuery<IHistorical[]>(["ohlcv",coinId],() => fetchCoinHistory(coinId),{
@@ -28,56 +28,11 @@ function Chart({coinId}:ChartProps){
         {isLoading ? 
            ("Chart is loading..." 
            ):(
-           <ApexChart 
-           type="line" 
-            series={[
-            {
-                name:"Price",
-                data:data?.map(price => price.close)
-            },
-            // {
-            //     name:"sales",
-            //     data:[1,2,3,4,5]
-            // }
-         ]}
-            options={{
-                theme:{
-                    mode:"dark"
-                },
-                chart:{
-                    height:300,
-                    width:500,
-                    toolbar:{
-                        show:false,
-                    },
-                    background: "transparent",
-                },
-                grid:{show:false},
-                stroke: {
-                    curve:"smooth",
-                    width: 4,
-                },
-                yaxis:{show:false},
-                xaxis:{
-                    axisBorder:{show:false},
-                    labels:{show:false},
-                    type:"datetime",
-                axisTicks:{show:false},
-                categories: data?.map(price => price.time_close)
-                 },
-                 fill: {type:"gradient",gradient:{gradientToColors:["#0be881"], stops:[0,100]},
-                },
-                colors:["#0fbcf9"],
-                tooltip:{
-                    y:{
-                        formatter:(value) => `$ ${value.toFixed(3)}`
-                    }
-                }
-            }} 
-        />
-    )}
-    </div>
-    );
+           <ApexChart />
+           )
+           }
+        </div>
+    )
 }
 
-export default Chart;
+export default LineChart;
