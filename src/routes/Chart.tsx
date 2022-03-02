@@ -1,6 +1,7 @@
 import { useQuery } from "react-query";
 import { fetchCoinHistory } from "./api";
 import ApexChart from "react-apexcharts";
+import { type } from "os";
 
 interface ChartProps{
     coinId:string
@@ -28,7 +29,27 @@ function LineChart({coinId}:ChartProps){
         {isLoading ? 
            ("Chart is loading..." 
            ):(
-           <ApexChart />
+           <ApexChart 
+           series={[
+        
+           ]}
+           xaxis={{
+                type:'datetime'
+                }}
+
+             options={{
+                 chart:{
+                     type:"candlestick",
+                     height: 350,
+                 },
+                 yaxis:{
+                     tooltip:{
+                         enabled:true
+                     }
+                 }
+             }}
+            
+           />
            )
            }
         </div>
