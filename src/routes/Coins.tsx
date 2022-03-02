@@ -59,8 +59,8 @@ const CoinWrapper = styled.div`
     align-items: center;
     margin-left:20px;
 `
-const Button = styled.button`
-  background-color: ${(props) => props.theme.accentColor}; /* Green */
+const ModeButton= styled.button<{darkMode:boolean}>`
+  background-color: ${(props) => props.darkMode ? props.theme.accentColor: props.theme.lightAccentColor};
   border: none;
   color: white;
   padding: 10px 12px;
@@ -69,7 +69,6 @@ const Button = styled.button`
   text-decoration: none;
   margin-right: 20px ;
 `
-
 
 interface ICoin{
     id: string,
@@ -80,20 +79,30 @@ interface ICoin{
     is_active: boolean,
     type: string,
 }
-
-
+ 
+interface IMode{
+    darkMode:boolean;
+}
 
 
 function Coins(){
     //unique key, fetch funtcion 
     //react query keeps the data as cache
     const {isLoading,data} = useQuery<ICoin[]>("allCoins",fetchCoins);
+    const [darkMode,setDark] = useState(true);
+    const onClick = () => {
+        if(darkMode === true){
+            setDark(false);
+        }else{
+            setDark(true);   
+        }
+    }
 
     return<Container>
         <Helmet>
             <title>Coins</title>
         </Helmet>
-        <Button><Link to="/">mode change &#8617;</Link></Button>
+        <ModeButton onClick={onClick} darkMode={darkMode} >mode change &#8617;</ModeButton>
         <Header>
             <Title>Coins</Title>
         </Header>

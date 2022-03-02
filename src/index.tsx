@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider } from 'styled-components';
 import App from './App';
-import { DarkTheme,LightTheme } from './theme';
+import { theme } from './theme';
 
 //create Client
 const queryClient = new QueryClient()
@@ -12,7 +12,7 @@ const queryClient = new QueryClient()
 ReactDOM.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={LightTheme}>
+      <ThemeProvider theme={theme}>
       <App />
       </ThemeProvider>
     </QueryClientProvider>
