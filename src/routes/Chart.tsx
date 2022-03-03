@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { fetchCoinHistory } from "./api";
 import ApexChart from "react-apexcharts";
-import { type } from "os";
+
 
 interface ChartProps{
     coinId:string
@@ -55,6 +55,8 @@ function LineChart({coinId}:ChartProps){
                     y: [6638.24, 6640, 6620, 6624.47]
                   }
                 ]}
+
+
            ]}
              options={{
                 theme:{
