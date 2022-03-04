@@ -222,7 +222,7 @@ function Coin(){
           </OverView>
           <Tabs>
             <Tab isActive={chartMatch !== null}>
-                <Link to={`/${coinId}/Chart`}>Chart</Link>
+                <Link to={`/${coinId}/Chart`} >Chart</Link>
             </Tab>
             <Tab isActive={priceMatch !== null}>
                 <Link to={`/${coinId}/Price`}>Price</Link>

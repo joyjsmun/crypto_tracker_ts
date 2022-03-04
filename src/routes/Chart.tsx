@@ -1,6 +1,7 @@
 import { useQuery } from "react-query";
 import { fetchCoinHistory } from "./api";
 import ApexChart from "react-apexcharts";
+import { info } from "console";
 
 
 interface ChartProps{
@@ -80,7 +81,7 @@ function LineChart({coinId}:ChartProps){
                      type:"datetime"
                  },
                  title: {
-                    text: "CandleStick Chart",
+                    text: `${info. toUpperCase()} Price`,
                     align: "center",
                   },
              }}
