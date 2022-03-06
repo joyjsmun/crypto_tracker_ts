@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import Router from './routes/Router';
-import styled, {createGlobalStyle} from "styled-components";
+import styled, {createGlobalStyle, ThemeProvider} from "styled-components";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { lightTheme,darkTheme } from './theme';
 
 
-const GlobalStyle = createGlobalStyle<{darkMode:boolean}>`
+const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
 
 */
@@ -59,10 +60,12 @@ table {
   box-sizing: border-box;
 }
 
-body{
+body {
+  font-weight: 300;
   font-family: 'Source Sans Pro', sans-serif;
-  background-color: ${(props) => props.darkMode ? props.theme.bgColor: props.theme.lightBgColor};
-  color:${(props) => props.darkMode ? props.theme.textColor: props.theme.lightTextColor};
+  background-color:${(props) => props.theme.bgColor};
+  color:${(props) => props.theme.textColor};
+  line-height: 1.2;
 }
 
 a{
@@ -71,8 +74,8 @@ a{
 }
 `
 
-const ModeButton= styled.button<{darkMode:boolean}>`
-  background-color: ${(props) => props.darkMode ? props.theme.accentColor: props.theme.lightAccentColor};
+const ModeButton= styled.button`
+  
   border: none;
   color: white;
   padding: 10px 12px;
@@ -82,27 +85,20 @@ const ModeButton= styled.button<{darkMode:boolean}>`
   margin-right: 20px ;
 `
 
-interface IMode{
-    darkMode:boolean;
-}
-
 
 function App() {
-  const [darkMode,setDark] = useState(true);
-  const onClick = () => {
-      if(darkMode === true){
-          setDark(false);
-      }else{
-          setDark(true);   
-      }
-  }
+  const [isDark,setDark] = useState(false);
+  const onClick = () => setDark((current) => !current);
   return (
+  
     //ghost componet could make not to use parent component
     <>
-    <GlobalStyle darkMode={darkMode}/>
-    <ModeButton onClick={onClick} darkMode={darkMode}>{darkMode? `Light` : `Dark`} Mode &#8617;</ModeButton>
+     <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+    <GlobalStyle/>
+    <ModeButton onClick={onClick} >Change Mode &#8617;</ModeButton>
     <Router />
     <ReactQueryDevtools initialIsOpen={true}/>
+    </ThemeProvider>
     </>
   );
 }
