@@ -83,6 +83,7 @@ const ModeButton= styled.button`
   text-align: center;
   text-decoration: none;
   margin-right: 20px ;
+  background-color: ${(props) => props.theme.accentColor};
 `
 
 

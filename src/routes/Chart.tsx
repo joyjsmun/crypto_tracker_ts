@@ -81,7 +81,7 @@ function LineChart({coinId}:ChartProps){
                      type:"datetime"
                  },
                  title: {
-                    text: `${data} Price`,
+                    text: `Price`,
                     align: "center",
                   },
              }}
