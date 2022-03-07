@@ -5,7 +5,8 @@ import ApexChart from "react-apexcharts";
 
 
 interface ChartProps{
-    coinId:string
+    coinId:string;
+    isDark:boolean;
 }
 
 interface IHistorical{
@@ -19,7 +20,7 @@ volume: number;
 market_cap: number;
 }
 
-function LineChart({coinId}:ChartProps){
+function LineChart({coinId, isDark}:ChartProps){
     // 14 of them => array[]
     const {isLoading,data} = 
         useQuery<IHistorical[]>(["ohlcv",coinId],() => fetchCoinHistory(coinId),{
@@ -61,7 +62,7 @@ function LineChart({coinId}:ChartProps){
            ]}
              options={{
                 theme:{
-                    mode:"dark"
+                    mode:isDark ? "dark" :"light",
                 },
                  chart:{
                      type:"candlestick",

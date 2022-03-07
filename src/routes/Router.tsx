@@ -2,15 +2,20 @@ import {BrowserRouter, Switch,Route} from "react-router-dom"
 import Coin from "./Coin";
 import Coins from "./Coins";
 
-function Router(){
+interface IRouteProps{
+    toggleDark:() => void;
+    isDark:boolean;
+}
+
+function Router({toggleDark,isDark}:IRouteProps){
     return(
         <BrowserRouter basename={process.env.PUBLIC_URL}>
             <Switch>
                 <Route  path="/:coinId">
-                    <Coin/>
+                    <Coin isDark={isDark}/>
                 </Route>
                 <Route path="/">
-                    <Coins />
+                    <Coins toggleDark={toggleDark} />
                 </Route>
             </Switch>
         </BrowserRouter>

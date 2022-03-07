@@ -89,15 +89,15 @@ const ModeButton= styled.button`
 
 function App() {
   const [isDark,setDark] = useState(false);
-  const onClick = () => setDark((current) => !current);
+  const toggleDark = () => setDark((current) => !current);
   return (
   
     //ghost componet could make not to use parent component
     <>
      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
     <GlobalStyle/>
-    <ModeButton onClick={onClick} >Change Mode &#8617;</ModeButton>
-    <Router />
+    <ModeButton onClick={toggleDark} >Change Mode &#8617;</ModeButton>
+    <Router isDark={isDark} toggleDark={toggleDark} />
     <ReactQueryDevtools initialIsOpen={true}/>
     </ThemeProvider>
     </>

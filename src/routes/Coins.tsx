@@ -70,10 +70,14 @@ interface ICoin{
     is_active: boolean,
     type: string,
 }
+
+interface ICoinProps{
+    toggleDark:() => void;
+}
  
 
 
-function Coins(){
+function Coins({toggleDark}:ICoinProps){
     //unique key, fetch funtcion 
     //react query keeps the data as cache
     const {isLoading,data} = useQuery<ICoin[]>("allCoins",fetchCoins);
@@ -84,6 +88,7 @@ function Coins(){
         </Helmet>
         <Header>
             <Title>Coins</Title>
+            <button onClick={toggleDark}>Chnage Dark Mode</button>
         </Header>
         {/* Link will not refresh the page */}
        {isLoading? <Loader>Loading...</Loader>
